@@ -98,7 +98,25 @@ var Deobfuscator = {
 		});
 
 		return keyFound;
-	}
+	},
+
+    //credit: https://github.com/deadly
+    propertyBefore: (object, before) => {
+        let propertyFound = null;
+        let key = null;
+
+        Object.keys(object).forEach(i => {
+            if (propertyFound == true) {
+                propertyFound = false;
+                key = object[i];
+            }
+
+            if (i == before) propertyFound = true;
+        });
+
+        return key;
+
+    }
 };
 
 /*
@@ -106,8 +124,8 @@ var Deobfuscator = {
  * Feel free to use this as a reference for finding others.
 */
 ig.game.player = Deobfuscator.object(ig.game, "screenName", false);
+ig.game.players = Deobfuscator.propertyBefore(ig.game, "sounds").player;
 ig.game.player.changeName = Deobfuscator.function(ig.game.player, "this.screenName", false);
-ig.game.players = Deobfuscator.object(ig.game, "betweenDefaultAndPlayer", false).player;
 ig.game.equip = Deobfuscator.object(ig.game, "removeItemFromCollection", false);
 ig.game.equip.item = Deobfuscator.function(ig.game.equip, "getItem_P", false);
 ig.game.player.allowEquip = Deobfuscator.keyBetween(ig.game.init, "t=!0,ig.game.", "=!0);");
